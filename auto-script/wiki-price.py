@@ -5,6 +5,9 @@ from typing import Optional, Tuple, List, Dict
 import pandas as pd
 from playwright.async_api import async_playwright
 
+# 全局变量定义
+df2 = None
+
 BASE_URL = "http://www.mobile-zone.jp"
 TOKEN = "008c43ec-7b08-4af0-86c4-b4495e15cee0"
 LIST_ENDPOINT = f"{BASE_URL}/api/goodsprice/list"
@@ -637,13 +640,14 @@ def post_update_prices(payload: dict, token: str, timeout: int = 60) -> dict:
 
 
 async def main():
+    global df2
     print("=" * 20)
     print(f"  🚀 开始提取...")
     df2 = await scrape_rank_table_to_df(headless=True)
     # df2 = scrape_rank_table_to_df(headless=True)
 
-    if "df2" not in globals():
-        raise RuntimeError(f" ❌ df2 is not defined. Please create/load df2 first.")
+    if df2 is None or df2.empty:
+        raise RuntimeError(f" ❌ df2 is not defined or empty. Please check the scraping logic.")
 
     if "iphone" not in df2.columns:
         raise ValueError(f" ❌ df2 must contain column: 'iphone'")
