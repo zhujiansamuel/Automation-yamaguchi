@@ -6,3 +6,7 @@
 
 # Data folder
 shop-data/
+
+caddy-ca-bundle.crt
+
+auto-notebook/.tmp_csv_uploads/
